@@ -19,9 +19,9 @@ m<-numeric(6435)
 
 for(i in 1:45){
 for(j in 1:143){
-m[((i-1)*143)+j]<-train[train$Store == i & train$Week == j,]$Store                   #Getting a vector with store numbers
+m[((i-1)*143)+j]<-train[train$Store == i & train$Week == j,]$Store                   
 }
-}
+}                                                                                   #Getting a vector with store numbers
 
 Store<-m
 
@@ -32,12 +32,12 @@ Walmart$Week<-as.numeric(replicate(45, Week))                                   
 
 Walmart$Date<-as.Date((Walmart$Week*7)+14638)
 
-train$Weekly_Sales<-as.numeric(train$Weekly_Sales)                                  #Adding all department sales together to get total Weekly Sales
+train$Weekly_Sales<-as.numeric(train$Weekly_Sales)                                  
 for(i in 1:45){
 for(j in 1:143){
 m[((i-1)*143)+j]<-sum(train[train$Store == i & train$Week == j,]$Weekly_Sales)
 }
-}                                                                                    #summing all department weekly sales
+}                                                                                    #Adding all department sales together to get total Weekly Sales
 Walmart$WeeklySales<-m
 
 train$Returns<-as.numeric(train$Returns)  #Total Weekly Returns
@@ -45,7 +45,7 @@ for(i in 1:45){
   for(j in 1:143){
     m[((i-1)*143)+j]<-sum(train[train$Store == i & train$Week == j,]$Returns)
 }
-}
+}                                                                                       #Adding all department returns together to get toal weekly returns
 Walmart$Returns<-m
 
 n<-list()
