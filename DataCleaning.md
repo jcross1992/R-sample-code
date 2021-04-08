@@ -65,3 +65,41 @@ features$Week<-numeric(8190)
 features$Week<-((as.numeric(as.Date(features$Date)))-14638)/7
 m<-numeric(8190)
 
+
+Walmart <- read.csv("~/GradSchool/walmart-recruiting-store-sales-forecasting/Walmart.csv")
+
+Walmart$Date<-as.Date((Walmart$Week*7)+14638)
+
+Walmart[Walmart$Week == 1,]$Returns<-0           #returns from 1st weeks sales don't have a value to be put with
+
+Walmart$Net_Sales<-numeric(6435)
+for(i in 1:6435){
+Walmart$Net_Sales[i]<-Walmart$WeeklySales[i]+Walmart$Returns[i+1] 
+}                                                         #Returns are assumed to be from previous weeks sales, so net sales is current week sales added to next weeks returns
+Walmart$Net_Sales[6435]<-760281.4
+
+
+
+Walmart$MarkDown1<-replace(Walmart$MarkDown1, is.na(Walmart$MarkDown1),0)
+Walmart$MarkDown2<-replace(Walmart$MarkDown2, is.na(Walmart$MarkDown2),0)
+Walmart$MarkDown3<-replace(Walmart$MarkDown3, is.na(Walmart$MarkDown3),0)
+Walmart$MarkDown4<-replace(Walmart$MarkDown4, is.na(Walmart$MarkDown4),0)
+Walmart$MarkDown5<-replace(Walmart$MarkDown5, is.na(Walmart$MarkDown5),0) #Changing all the values in Markdowns of NA to 0
+
+Walmart$IsHoliday<-as.numeric(Walmart$IsHoliday)
+
+Walmart<-Walmart[,c(1,2,3,4,5,18,6,9,10,11,12,13,14,15,16,17,7,8)] #Reorganizing the data
+for(i in 1:6435){
+  Walmart$TypeB[i]<-ifelse(Walmart$Type[i] =="B",1,0) #creating an indicator variable for Type B
+  }
+
+for(i in 1:6435){
+  Walmart$TypeC[i]<-ifelse(Walmart$Type[i] =="C",1,0)#creating a indicator variable for Type C
+}
+
+write.csv(Walmart, file = "Walmart.csv", row.names = FALSE)
+
+
+
+
+
